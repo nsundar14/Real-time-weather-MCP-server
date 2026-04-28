@@ -5,6 +5,7 @@ FastMCP-based server for real-time weather information
 
 from fastmcp import FastMCP
 import requests
+import os
 from typing import Dict, Any
 from datetime import datetime
 
@@ -207,4 +208,5 @@ def get_weather_forecast(city: str, days: int = 7, temperature_unit: str = "cels
 
 if __name__ == "__main__":
     # Run the MCP server with SSE transport
-    mcp.run(transport="sse")
+    # Bind to 0.0.0.0 to allow external access in Docker/Kubernetes
+    mcp.run(transport="sse", host="0.0.0.0", port=int(os.getenv("PORT", "8000")))
